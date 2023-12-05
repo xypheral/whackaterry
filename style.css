@@ -78,14 +78,23 @@ button {
     transition: background-color 0.3s;
 }
 
-button:hover {
-    background-color: #45a049;
+.container {
+    text-align: center;
 }
 
 .developed-by {
-    display: block;
+    font-size: 12px;
 }
 
-.game-running .developed-by {
-    display: none;
+.developed-by strong {
+    font-weight: bold;
+    font-style: italic;
+}
+
+.game-container {
+    text-align: center;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }

@@ -7,27 +7,26 @@
     <title>Whack-a-Terry Game</title>
 </head>
 <body>
-    <div class="game-container">
-        <h1>Whack-a-Terry Game</h1>
-        <p id="score">Score: 0</p>
-        <p id="timer">Time: 30s</p>
-        <p id="result"></p>
+    <div class="container">
+        <!-- "Developed by xypheral" text outside the game container -->
 
-        <div class="button-container">
-            <button id="startButton">Start Game</button>
-            <button id="retryButton" style="display: none;">Retry</button>
+        <div class="game-container">
+            <h1>Whack-a-Terry Game</h1>
+            <p id="score">Score: 0</p>
+            <p id="timer">Time: 30s</p>
+            <p id="result"></p>
+
+            <div class="button-container">
+                <button id="startButton">Start Game</button>
+                <button id="retryButton" style="display: none;">Retry</button>
+            </div>
+
+            <div class="moles-border-box" id="molesBorderBox">
+                <div class="moles-container" id="molesContainer"></div>
+            </div>
         </div>
-        
 
-        
-
-        <div class="moles-border-box" id="molesBorderBox">
-            <div class="moles-container" id="molesContainer"></div>
-        </div>
-
-        <div>
-            <p class="developed-by">Developed by xypheral</p>
-        </div>
+        <p class="developed-by">Developed by xypheral</p>
 
     </div>
     <script src="script.js"></script>
