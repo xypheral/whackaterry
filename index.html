@@ -8,10 +8,8 @@
 </head>
 <body>
     <div class="container">
-        <!-- "Developed by xypheral" text outside the game container -->
-
         <div class="game-container">
-            <h1>Whack-a-Terry Game</h1>
+            <h1>Whack-a-Terry</h1>
             <p id="score">Score: 0</p>
             <p id="timer">Time: 30s</p>
             <p id="result"></p>
@@ -27,8 +25,18 @@
         </div>
 
         <p class="developed-by">Developed by xypheral</p>
-
     </div>
+
+    <div id="nameModal" class="modal">
+        <div class="modal-content">
+            <label for="nameInput">Enter your name:</label>
+            <input type="text" id="nameInput">
+            <button id="submitName">Submit</button>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-firestore.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

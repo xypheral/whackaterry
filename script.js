@@ -50,7 +50,6 @@ function createMole() {
 
     mole.addEventListener('click', () => {
         mole.remove();
-        playSound('whack');
         updateScore(1);
     });
 
@@ -71,7 +70,6 @@ function whackMole(event) {
     const mole = event.target;
     if (mole.classList.contains('mole')) {
         mole.classList.add('mole-whacked');
-        playSound('whack');
         updateScore(1);
 
         setTimeout(() => {
@@ -94,14 +92,40 @@ function getRandomPosition() {
     return { column, row };
 }
 
-function playSound(sound) {
-    const audio = new Audio(`sounds/${sound}.mp3`);
-    audio.play();
-}
-
-function endGame() {
+async function endGame() {
     clearInterval(gameInterval);
     clearMoles();
+
+    // Display the modal
+    const nameModal = document.getElementById('nameModal');
+    nameModal.style.display = 'block';
+
+    // Use a Promise to wait for the user to submit their name
+    const playerName = await new Promise((resolve) => {
+        const submitButton = document.getElementById('submitName');
+        const nameInput = document.getElementById('nameInput');
+
+        submitButton.addEventListener('click', () => {
+            const enteredName = nameInput.value.trim();
+            if (enteredName !== '') {
+                nameModal.style.display = 'none';
+                resolve(enteredName);
+            } else {
+                alert('Please enter a valid name.');
+            }
+        });
+    });
+
+    // Store the score in Firestore
+    await db.collection('scores').add({
+        name: playerName,
+        score: score,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+    });
+
+    // Fetch and display the leaderboard
+    fetchLeaderboard();
+
     resultElement.textContent = `Game Over! Your Score: ${score}`;
     molesBorderBox.style.height = '0';
     retryButton.style.display = 'block';
@@ -109,6 +133,28 @@ function endGame() {
 
     document.querySelector('.developed-by').style.display = 'block';
 }
+
+
+async function fetchLeaderboard() {
+    // Fetch the top 5 scores from Firestore
+    const querySnapshot = await db.collection('scores').orderBy('score', 'desc').limit(5).get();
+
+    // Display the leaderboard in a table
+    let leaderboardHtml = '<h2>Leaderboard</h2>';
+    leaderboardHtml += '<table>';
+    leaderboardHtml += '<tr><th>Rank</th><th>Name</th><th>Score</th></tr>';
+
+    let rank = 1;
+    querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        leaderboardHtml += `<tr><td>${rank}</td><td>${data.name}</td><td>${data.score}</td></tr>`;
+        rank++;
+    });
+
+    leaderboardHtml += '</table>';
+    resultElement.innerHTML += leaderboardHtml;
+}
+
 
 function clearMoles() {
     while (molesContainer.firstChild) {
@@ -131,3 +177,17 @@ retryButton.addEventListener('click', restartGame);
 gameContainer.addEventListener('click', () => {
     gameContainer.classList.add('game-running');
 });
+
+// Initialize Firebase
+const firebaseConfig = {
+    apiKey: "AIzaSyBBS74pHrHSdm1Ke1Y0uYt4qkgqawLi57E",
+    authDomain: "whackaterry.firebaseapp.com",
+    projectId: "whackaterry",
+    storageBucket: "whackaterry.appspot.com",
+    messagingSenderId: "183587835149",
+    appId: "1:183587835149:web:da07db449fb7b5b6e43444",
+    measurementId: "G-JWV46ZSCYY"
+  };
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
