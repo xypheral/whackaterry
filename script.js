@@ -96,11 +96,9 @@ async function endGame() {
     clearInterval(gameInterval);
     clearMoles();
 
-    // Display the modal
     const nameModal = document.getElementById('nameModal');
     nameModal.style.display = 'block';
 
-    // Use a Promise to wait for the user to submit their name
     const playerName = await new Promise((resolve) => {
         const submitButton = document.getElementById('submitName');
         const nameInput = document.getElementById('nameInput');
@@ -116,14 +114,12 @@ async function endGame() {
         });
     });
 
-    // Store the score in Firestore
     await db.collection('scores').add({
         name: playerName,
         score: score,
         timestamp: firebase.firestore.FieldValue.serverTimestamp(),
     });
 
-    // Fetch and display the leaderboard
     fetchLeaderboard();
 
     resultElement.textContent = `Game Over! Your Score: ${score}`;
@@ -136,10 +132,8 @@ async function endGame() {
 
 
 async function fetchLeaderboard() {
-    // Fetch the top 5 scores from Firestore
     const querySnapshot = await db.collection('scores').orderBy('score', 'desc').limit(5).get();
 
-    // Display the leaderboard in a table
     let leaderboardHtml = '<h2>Leaderboard</h2>';
     leaderboardHtml += '<table>';
     leaderboardHtml += '<tr><th>Rank</th><th>Name</th><th>Score</th></tr>';
@@ -178,7 +172,6 @@ gameContainer.addEventListener('click', () => {
     gameContainer.classList.add('game-running');
 });
 
-// Initialize Firebase
 const firebaseConfig = {
     apiKey: "AIzaSyBBS74pHrHSdm1Ke1Y0uYt4qkgqawLi57E",
     authDomain: "whackaterry.firebaseapp.com",
