@@ -5,6 +5,7 @@ const startButton = document.getElementById('startButton');
 const retryButton = document.getElementById('retryButton');
 const molesBorderBox = document.getElementById('molesBorderBox');
 const resultElement = document.getElementById('result');
+const gameContainer = document.querySelector('.game-container');
 
 let score = 0;
 let time = 30;
@@ -35,6 +36,8 @@ function startGame() {
             endGame();
         }
     }, 1000);
+
+    document.querySelector('.developed-by').style.display = 'none';
 }
 
 function createMole() {
@@ -103,6 +106,8 @@ function endGame() {
     molesBorderBox.style.height = '0';
     retryButton.style.display = 'block';
     retryButton.addEventListener('click', restartGame);
+
+    document.querySelector('.developed-by').style.display = 'block';
 }
 
 function clearMoles() {
@@ -123,3 +128,6 @@ function restartGame() {
 
 startButton.addEventListener('click', startGame);
 retryButton.addEventListener('click', restartGame);
+gameContainer.addEventListener('click', () => {
+    gameContainer.classList.add('game-running');
+});
